@@ -152,11 +152,19 @@ if !exists('*g:textobj_function_html')
     endfun
 
     fun s:select_li_a()
-       return  s:select_html_a('li')
+       let temp_matchwords = b:match_words
+       let b:match_words = "<li[^>]*>:</li>"
+       let result = s:select_html_a('li')
+       let b:match_words = temp_matchwords
+       return result
     endfun
 
     fun s:select_li_i()
-       return  s:select_html_i('li')
+       let temp_matchwords = b:match_words
+       let b:match_words = "<li[^>]*>:</li>"
+       let result = s:select_html_i('li')
+       let b:match_words = temp_matchwords
+       return result
     endfun
 
     fun s:select_table_a()
@@ -176,11 +184,19 @@ if !exists('*g:textobj_function_html')
     endfun
 
     fun s:select_td_a()
-       return  s:select_html_a('td')
+       let temp_matchwords = b:match_words
+       let b:match_words = "<td[^>]*>:</td>"
+       let result =  s:select_html_a('td')
+       let b:match_words = temp_matchwords
+       return result
     endfun
 
     fun s:select_td_i()
-       return  s:select_html_i('td')
+       let temp_matchwords = b:match_words
+       let b:match_words = "<td[^>]*>:</td>"
+       let result =  s:select_html_i('td')
+       let b:match_words = temp_matchwords
+       return  result
     endfun
 
     " 2}}}
