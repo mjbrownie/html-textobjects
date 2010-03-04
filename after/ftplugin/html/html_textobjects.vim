@@ -68,7 +68,7 @@ if !exists('*g:textobj_function_html')
     " Worker functions {{{2
     fun s:select_html_a(type)
         let initpos = getpos(".")
-        if  ( search('<'.a:type.'[ >]','b') ==-0)
+        if  ( searchpair('<'.a:type.'[ >]','', '</' . a:type .  '>' , 'b') == 0)
             return 0
         endif
         let e =getpos('.')
@@ -79,7 +79,7 @@ if !exists('*g:textobj_function_html')
 
     fun s:select_html_i(type)
         let initpos = getpos(".")
-        if ( search('<'.a:type . "[ >]", 'b') == 0)
+        if ( searchpair('<'.a:type . "[ >]",'', '</' . a:type . '>', 'b') == 0)
             return 0
         endif
         normal f>
