@@ -1,5 +1,5 @@
 " textobj-html - Text objects for html
-" Version: 0.1.0
+" Version: 0.2.0
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -22,11 +22,8 @@
 "
 " Dependencies:
 "
-"     user-textobjects by Kana Natsuno
+"     textobj-user by Kana Natsuno
 "     http://www.vim.org/scripts/script.php?script_id=2100
-"
-"     matchit by Benju Fisher
-"     http://www.vim.org/scripts/script.php?script_id=39
 "
 "
 " Overview:
@@ -67,13 +64,23 @@ if !exists('*g:textobj_function_html')
 
     " Worker functions {{{2
     fun s:select_html_a(type)
+
         let initpos = getpos(".")
-        if  ( searchpair('<'.a:type.'[ >]','', '</' . a:type .  '>' , 'b') == 0)
+
+        let e =searchpairpos('<'.a:type.'[ >]','', '</' . a:type .  '>' , 'b')
+        if  ( e == [0,0])
             return 0
         endif
-        let e =getpos('.')
-        normal lg%f>
-        let b = getpos('.')
+
+        let e = [bufnr(".")] + e + [0]
+
+        call setpos(".",initpos)
+
+        call searchpair('<'.a:type.'[ >]','', '</' . a:type .  '>' ,'')
+
+        norm f>
+        let b =  getpos(".")
+
         return ['v',b,e]
     endfun
 
@@ -85,13 +92,14 @@ if !exists('*g:textobj_function_html')
         normal f>
         call search('.')
         let e =getpos('.')
-        call search('<','b')
-        normal lg%
-        let tempwrap = &ww
-        set ww=h
-        norm 2h
-        exec "set ww=" . tempwrap
-        let b = getpos('.')
+
+        call setpos(".",initpos)
+
+        call searchpair('<'.a:type . "[ >]",'', '</' . a:type . '>', '')
+
+        call search('.','b')
+
+        let b = getpos(".")
         return ['v',b,e]
     endfun
 
